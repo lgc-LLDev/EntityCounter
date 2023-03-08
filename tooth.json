@@ -1,0 +1,20 @@
+{
+  "format_version": 1,
+  "tooth": "github.com/lgc-LLSEDev/EntityCounter",
+  "version": "0.0.1",
+  "dependencies": {},
+  "information": {
+    "name": "EntityCounter",
+    "description": "看看服务器内的生物统计信息！",
+    "author": "student_2333 <lgc2333@126.com>",
+    "license": "Apache-2.0",
+    "homepage": "https://github.com/lgc-LLSEDev/EntityCounter"
+  },
+  "placement": [
+    {
+      "source": "EntityCounter.js",
+      "destination": "plugins/EntityCounter.js"
+    }
+  ],
+  "possession": []
+}
