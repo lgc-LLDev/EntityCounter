@@ -1,10 +1,12 @@
+<!-- markdownlint-disable MD033 -->
+
 # EntityCounter
 
 看看服务器内的生物统计信息！
 
 ## 介绍
 
-![1](readme/Screenshot_20221124-215235.png)
+![1](https://raw.githubusercontent.com/lgc-LLSEDev/readme/main/EntityCounter/Screenshot_20221124-215235.png)
 
 ## 指令
 
