@@ -1,5 +1,5 @@
 // LiteLoaderScript Dev Helper
-/// <reference path="c:\Users\Administrator\Desktop\llse\LLSEPlugins\.vscode\Library/dts/llaids/src/index.d.ts"/>
+/// <reference path="../HelperLib/src/index.d.ts"/>
 
 const entityNames = {
   'minecraft:area_effect_cloud': '区域效果云',
