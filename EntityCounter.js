@@ -1,5 +1,6 @@
 // LiteLoaderScript Dev Helper
 /// <reference path="../HelperLib/src/index.d.ts"/>
+/* global mc ll PermType ParamType */
 
 const entityNames = {
   'minecraft:area_effect_cloud': '区域效果云',
@@ -147,7 +148,8 @@ cmdEntC.setCallback(
     out,
     /** @type {{targets?:Entity[],showAnalytics?:boolean}} */ res
   ) => {
-    let { targets, showAnalytics } = res;
+    let { targets } = res;
+    const { showAnalytics } = res;
     const { player } = origin;
     let isSelector = true;
 
