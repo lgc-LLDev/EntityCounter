@@ -145,76 +145,80 @@ function objectToStr(obj) {
   return tmpLi.join('\n');
 }
 
-const cmdEntC = mc.newCommand('entc', '查看服务器当前实体数量', PermType.Any);
+mc.listen('onServerStarted', () => {
+  const cmdEntC = mc.newCommand('entc', '查看服务器当前实体数量', PermType.Any);
 
-cmdEntC.optional('targets', ParamType.Actor);
-cmdEntC.optional('showAnalytics', ParamType.Bool);
-cmdEntC.overload(['showAnalytics', 'targets']);
-cmdEntC.setCallback(
-  (
-    _,
-    origin,
-    out,
-    /** @type {{targets?:Entity[],showAnalytics?:boolean}} */ res
-  ) => {
-    let { targets } = res;
-    const { showAnalytics } = res;
-    const { player } = origin;
-    let isSelector = true;
+  cmdEntC.optional('targets', ParamType.Actor);
+  cmdEntC.optional('showAnalytics', ParamType.Bool);
+  cmdEntC.overload(['showAnalytics', 'targets']);
+  cmdEntC.setCallback(
+    (
+      _,
+      origin,
+      out,
+      /** @type {{targets?:Entity[],showAnalytics?:boolean}} */ res
+    ) => {
+      let { targets } = res;
+      const { showAnalytics } = res;
+      const { player } = origin;
+      let isSelector = true;
 
-    if (!targets) {
-      targets = mc.getAllEntities();
-      isSelector = false;
-    }
-    // if (showAnalytics === undefined) showAnalytics = true;
-
-    const count = targets.length;
-
-    /** @type { { [type: string]: number } } */
-    const analytic = {};
-    /** @type { { [type: string]: number } } */
-    const itemAnalytic = {};
-    targets.forEach((e) => {
-      const { type, name } = e;
-      // @ts-expect-error - type as keyof entityNames
-      const disName = entityNames[type] || name;
-      const num = analytic[disName] || 0;
-      analytic[disName] = num + 1;
-
-      if (type === 'minecraft:item') {
-        const itNum = itemAnalytic[name] || 0;
-        itemAnalytic[name] = itNum + 1;
+      if (!targets) {
+        targets = mc.getAllEntities();
+        isSelector = false;
       }
-    });
+      // if (showAnalytics === undefined) showAnalytics = true;
 
-    const targetTip = isSelector
-      ? `§d目标选择器§r已选择`
-      : '§d当前服务器§r已加载';
+      const count = targets.length;
 
-    let analyticTip = '';
-    if (count !== 0 && showAnalytics) {
-      const tmpLi = [
-        `\n==============\n以下是已统计实体及数量：\n${objectToStr(analytic)}`,
-      ];
-      if (Object.keys(itemAnalytic).length > 0)
-        tmpLi.push(
-          `==============\n在这些实体中，§d掉落物§r的名称与数量：\n` +
-            `${objectToStr(itemAnalytic)}`
+      /** @type { { [type: string]: number } } */
+      const analytic = {};
+      /** @type { { [type: string]: number } } */
+      const itemAnalytic = {};
+      targets.forEach((e) => {
+        const { type, name } = e;
+        // @ts-expect-error - type as keyof entityNames
+        const disName = entityNames[type] || name;
+        const num = analytic[disName] || 0;
+        analytic[disName] = num + 1;
+
+        if (type === 'minecraft:item') {
+          const itNum = itemAnalytic[name] || 0;
+          itemAnalytic[name] = itNum + 1;
+        }
+      });
+
+      const targetTip = isSelector
+        ? `§d目标选择器§r已选择`
+        : '§d当前服务器§r已加载';
+
+      let analyticTip = '';
+      if (count !== 0 && showAnalytics) {
+        const tmpLi = [
+          `\n==============\n以下是已统计实体及数量：\n${objectToStr(
+            analytic
+          )}`,
+        ];
+        if (Object.keys(itemAnalytic).length > 0)
+          tmpLi.push(
+            `==============\n在这些实体中，§d掉落物§r的名称与数量：\n` +
+              `${objectToStr(itemAnalytic)}`
+          );
+        analyticTip = tmpLi.join('\n');
+      }
+
+      const tip = `${targetTip} §l§6${count} §r个实体${analyticTip}`;
+      if (player && showAnalytics) {
+        player.sendForm(
+          mc.newSimpleForm().setTitle('§b实体数量查看').setContent(tip),
+          () => {}
         );
-      analyticTip = tmpLi.join('\n');
+      } else {
+        out.success(`§b[实体数量查看] ${tip}`);
+      }
     }
-
-    const tip = `${targetTip} §l§6${count} §r个实体${analyticTip}`;
-    if (player && showAnalytics) {
-      player.sendForm(
-        mc.newSimpleForm().setTitle('§b实体数量查看').setContent(tip),
-        () => {}
-      );
-    } else {
-      out.success(`§b[实体数量查看] ${tip}`);
-    }
-  }
-);
-cmdEntC.setup();
+  );
+  cmdEntC.setup();
+});
 
 ll.registerPlugin('EntityCounter', '实体数量查看', [0, 0, 2], {});
