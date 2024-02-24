@@ -31,11 +31,10 @@ const entityNames = {
   'minecraft:evocation_illager': '唤魔者',
   'minecraft:evocation_fang': '唤魔者尖牙',
   'minecraft:eye_of_ender_signal': '末影之眼',
-  'minecraft:falling_block': '掉落中的方块',
+  'minecraft:falling_block': '下落的方块',
   'minecraft:fireball': '火球',
   'minecraft:fireworks_rocket': '烟花火箭',
-  'minecraft:fishing_hook': '鱼钩',
-  'minecraft:fish.clownfish': '小丑鱼',
+  'minecraft:fishing_hook': '浮漂',
   'minecraft:fox': '狐狸',
   'minecraft:cod': '鳕鱼',
   'minecraft:pufferfish': '河豚',
@@ -53,7 +52,7 @@ const entityNames = {
   'minecraft:iron_golem': '铁傀儡',
   'minecraft:item': '掉落物',
   'minecraft:leash_knot': '拴绳结',
-  'minecraft:lightning_bolt': '闪电',
+  'minecraft:lightning_bolt': '闪电束',
   'minecraft:lingering_potion': '滞留药水',
   'minecraft:llama': '羊驼',
   'minecraft:trader_llama': '行商羊驼',
@@ -86,6 +85,7 @@ const entityNames = {
   'minecraft:stray': '流浪者',
   'minecraft:slime': '史莱姆',
   'minecraft:small_fireball': '小火球',
+  'minecraft:sniffer': '嗅探兽',
   'minecraft:snowball': '雪球',
   'minecraft:snow_golem': '雪傀儡',
   'minecraft:spider': '蜘蛛',
@@ -105,8 +105,8 @@ const entityNames = {
   'minecraft:witch': '女巫',
   'minecraft:wither': '凋灵',
   'minecraft:wither_skeleton': '凋灵骷髅',
-  'minecraft:wither_skull': '凋灵头颅',
-  'minecraft:wither_skull_dangerous': '危险的凋灵头颅',
+  'minecraft:wither_skull': '凋灵之首',
+  'minecraft:wither_skull_dangerous': '凋灵之首',
   'minecraft:wolf': '狼',
   'minecraft:xp_orb': '经验球',
   'minecraft:xp_bottle': '附魔之瓶',
@@ -121,11 +121,20 @@ const entityNames = {
   'minecraft:warden': '监守者',
   'minecraft:allay': '悦灵',
   'minecraft:chest_boat': '运输船',
+  'minecraft:camel': '骆驼',
+  'minecraft:chest_raft': '运输竹筏',
   'minecraft:balloon': '气球',
   'minecraft:ice_bomb': '冰弹',
+  'minecraft:breeze': '旋风人',
+  'minecraft:armadillo': '犰狳',
 };
 
+/**
+ * @param { { [type: string]: number } } obj
+ * @returns {string}
+ */
 function objectToStr(obj) {
+  /** @type {string[]} */
   const tmpLi = [];
   Object.entries(obj)
     .sort((x, y) => y[1] - x[1])
@@ -161,11 +170,13 @@ cmdEntC.setCallback(
 
     const count = targets.length;
 
-    /** @type {{[type:string]:number}} */
+    /** @type { { [type: string]: number } } */
     const analytic = {};
+    /** @type { { [type: string]: number } } */
     const itemAnalytic = {};
     targets.forEach((e) => {
       const { type, name } = e;
+      // @ts-expect-error - type as keyof entityNames
       const disName = entityNames[type] || name;
       const num = analytic[disName] || 0;
       analytic[disName] = num + 1;
@@ -206,4 +217,4 @@ cmdEntC.setCallback(
 );
 cmdEntC.setup();
 
-ll.registerPlugin('EntityCounter', '实体数量查看', [0, 0, 1], {});
+ll.registerPlugin('EntityCounter', '实体数量查看', [0, 0, 2], {});
