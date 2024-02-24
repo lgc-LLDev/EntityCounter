@@ -6,7 +6,7 @@
 
 ## 介绍
 
-![1](https://raw.githubusercontent.com/lgc-LLSEDev/readme/main/EntityCounter/Screenshot_20221124-215235.png)
+![1](https://raw.githubusercontent.com/lgc-LLDev/readme/main/EntityCounter/Screenshot_20221124-215235.png)
 
 ## 指令
 
